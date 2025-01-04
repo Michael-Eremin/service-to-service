@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        output1:
+          destination: "order1-topic"
+          content-type: application/json
+        output2:
+          destination: "order2-topic"
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: localhost:9092
