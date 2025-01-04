@@ -1,0 +1,17 @@
+server:
+  port: ${SPRING_BACKEND_PORT}
+
+spring:
+  application:
+    name: report
+
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    report:
+      postgres:
+        url: ${REPORT_DATABASE_URL}
+        username: ${REPORT_DATABASE_USER}
+        password: ${REPORT_DATABASE_PASSWORD}

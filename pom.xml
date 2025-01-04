@@ -30,11 +30,13 @@
 	<properties>
 		<java.version>21</java.version>
 		<spring-cloud.version>2024.0.0</spring-cloud.version>
+		<postgresql.version>42.4.0</postgresql.version>
 	</properties>
 
 	<modules>
 		<module>stock-service</module>
 		<module>order-service</module>
+		<module>report-service</module>
 	</modules>
 
 
@@ -55,6 +57,16 @@
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
 		</dependency>
 
 		<dependency>
