@@ -8,10 +8,12 @@ import java.util.function.Consumer;
 @Service
 public class OderConsumer {
     @Bean
-    public Consumer<Order> input() {
+    public Consumer<com.example.stockService.Order> input() {
         System.out.println("Input Order");
         return order -> {
-            System.out.println("Received order: " + order.getName() + " from department " + order.getDepartment());
+            String name = order.getName();
+            String department = order.getDepartment();
+            System.out.println("Received order: " + name + " from department " + department);
         };
     }
 }
