@@ -1,4 +1,4 @@
-package com.example.orderService;
+package com.example.orderService.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,8 @@
-package com.example.orderService;
+package com.example.orderService.interfaces.rest;
 
 
+import com.example.orderService.infrastructure.brokers.OrderProducer;
+import com.example.orderService.domain.dto.Order;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
