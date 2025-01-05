@@ -1,6 +1,6 @@
-package com.example.orderService;
+package com.example.orderService.infrastructure.brokers;
 
-import com.example.orderService.Order;
+import com.example.orderService.domain.dto.Order;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
