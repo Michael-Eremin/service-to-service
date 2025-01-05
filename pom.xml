@@ -8,7 +8,7 @@
 		<version>3.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>support.home-project</groupId>
+	<groupId>project-services</groupId>
 	<artifactId>service-to-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -34,9 +34,9 @@
 	</properties>
 
 	<modules>
-		<module>stock-service</module>
 		<module>order-service</module>
-		<module>report-service</module>
+<!--		<module>stock-service</module>-->
+<!--		<module>report-service</module>-->
 	</modules>
 
 

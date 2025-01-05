@@ -2,6 +2,10 @@ server:
   port: 8082
 
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
   cloud:
     stream:
       bindings:
@@ -21,3 +25,4 @@ spring:
                   topics: false
 
           brokers: localhost:9092
+#          brokers: 172.19.0.1:9092

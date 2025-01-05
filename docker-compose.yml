@@ -1,45 +1,57 @@
 services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper_1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka_1
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+
+  postgres-order:
+    image: postgres:latest
+    container_name: postgres-order
+    environment:
+      POSTGRES_DB: "order_db"
+      POSTGRES_USER: "service11"
+      POSTGRES_PASSWORD: "service2025"
+    volumes:
+      - ../service-to-data/order-db-data:/var/lib/postgresql/data
+      - ../service-to-env/init-order.sql:/docker-entrypoint-initdb.d/init-database.sql
+    ports:
+      - "5132:5432"
+#    networks:
+#      - services-net
+
   order-service:
     image: order-service
+    container_name: order
+    env_file:
+      - ../service-to-env/test.env
     build:
       context: .
-      dockerfile: ./order-service/Dockerfile
-
+      dockerfile: order-service/Dockerfile
     ports:
       - "8081:8081"
 #    networks:
-#      - microservices-net
-
-  stock-service:
-    image: stock-service
-    build:
-      context: .
-      dockerfile: ./stock-service/Dockerfile
-    ports:
-      - "8082:8082"
-
-#    networks:
-#      - microservices-net
-
-#  kafka:
-#    image: confluentinc/cp-kafka:latest
-#    ports:
-#      - "9092:9092"
-#    environment:
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-#    networks:
-#      - microservices-net
-#
-#  zookeeper:
-#    image: confluentinc/cp-zookeeper:latest
-#    environment:
-#      ZOOKEEPER_CLIENT_PORT: 2181
-#    ports:
-#      - "2181:2181"
-#    networks:
-#      - microservices-net
+#      - services-net
+    depends_on:
+      - postgres-order
 
 #networks:
-#  microservices-net:
+#  services-net:
+#    name: services-net
 #    driver: bridge
+#    external: true
