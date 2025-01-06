@@ -15,3 +15,7 @@ spring:
         url: ${REPORT_DATABASE_URL}
         username: ${REPORT_DATABASE_USER}
         password: ${REPORT_DATABASE_PASSWORD}
+
+  placement:
+    convertpdf: ${REPORT_CONVERT_PDF_FOLDER}
+    bash: ${REPORT_BASH}

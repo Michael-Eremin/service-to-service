@@ -8,7 +8,7 @@
 		<version>3.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>support.home-project</groupId>
+	<groupId>project-services</groupId>
 	<artifactId>service-to-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -33,9 +33,12 @@
 		<postgresql.version>42.4.0</postgresql.version>
 	</properties>
 
+
+
+
 	<modules>
-		<module>stock-service</module>
 		<module>order-service</module>
+		<module>stock-service</module>
 		<module>report-service</module>
 	</modules>
 
@@ -45,6 +48,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

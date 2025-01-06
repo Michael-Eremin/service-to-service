@@ -2,6 +2,15 @@ server:
   port: 8081
 
 spring:
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    order:
+      postgres:
+        url: ${ORDER_DATABASE_URL}
+        username: ${ORDER_DATABASE_USER}
+        password: ${ORDER_DATABASE_PASSWORD}
   cloud:
     stream:
       bindings:
@@ -13,4 +22,4 @@ spring:
           content-type: application/json
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${ORDER_BROKERS_URL}
