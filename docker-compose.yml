@@ -1,24 +1,24 @@
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    container_name: zookeeper_1
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-    ports:
-      - "2181:2181"
-
-
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    container_name: kafka_1
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    ports:
-      - "9092:9092"
-    depends_on:
-      - zookeeper
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:latest
+#    container_name: zookeeper_1
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#    ports:
+#      - "2181:2181"
+#
+#
+#  kafka:
+#    image: confluentinc/cp-kafka:latest
+#    container_name: kafka_1
+#    environment:
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#    ports:
+#      - "9092:9092"
+#    depends_on:
+#      - zookeeper
 
   postgres-order:
     image: postgres:latest
@@ -32,8 +32,8 @@ services:
       - ../service-to-env/init-order.sql:/docker-entrypoint-initdb.d/init-database.sql
     ports:
       - "5132:5432"
-#    networks:
-#      - services-net
+    networks:
+      - services-net
 
   order-service:
     image: order-service
@@ -45,13 +45,13 @@ services:
       dockerfile: order-service/Dockerfile
     ports:
       - "8081:8081"
-#    networks:
-#      - services-net
+    networks:
+      - services-net
     depends_on:
       - postgres-order
 
-#networks:
-#  services-net:
-#    name: services-net
-#    driver: bridge
-#    external: true
+networks:
+  services-net:
+    name: services-net
+    driver: bridge
+    external: true

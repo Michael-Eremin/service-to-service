@@ -1,7 +1,10 @@
 server:
-  port: 8082
+  port: ${STOCK_PORT}
 
 spring:
+  webclient:
+    url:
+      report: ${REPORT_URL}
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
@@ -24,5 +27,5 @@ spring:
                 create:
                   topics: false
 
-          brokers: localhost:9092
-#          brokers: 172.19.0.1:9092
+#          brokers: localhost:9092
+          brokers: ${STOCK_BROKERS_URL}
