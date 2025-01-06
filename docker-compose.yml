@@ -1,25 +1,4 @@
 services:
-#  zookeeper:
-#    image: confluentinc/cp-zookeeper:latest
-#    container_name: zookeeper_1
-#    environment:
-#      ZOOKEEPER_CLIENT_PORT: 2181
-#    ports:
-#      - "2181:2181"
-#
-#
-#  kafka:
-#    image: confluentinc/cp-kafka:latest
-#    container_name: kafka_1
-#    environment:
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-#    ports:
-#      - "9092:9092"
-#    depends_on:
-#      - zookeeper
-
   postgres-order:
     image: postgres:latest
     container_name: postgres-order
@@ -32,6 +11,21 @@ services:
       - ../service-to-env/init-order.sql:/docker-entrypoint-initdb.d/init-database.sql
     ports:
       - "5132:5432"
+    networks:
+      - services-net
+
+  postgres-report:
+    image: postgres:latest
+    container_name: postgres-report
+    environment:
+      POSTGRES_DB: "report_db"
+      POSTGRES_USER: "service11"
+      POSTGRES_PASSWORD: "service2025"
+    volumes:
+      - ../service-to-data/report-db-data:/var/lib/postgresql/data
+      - ../service-to-env/init-report.sql:/docker-entrypoint-initdb.d/init-database.sql
+    ports:
+      - "5332:5432"
     networks:
       - services-net
 
@@ -49,6 +43,36 @@ services:
       - services-net
     depends_on:
       - postgres-order
+
+  stock-service:
+    image: stock-service
+    container_name: stock
+    env_file:
+      - ../service-to-env/stock-test.env
+    build:
+      context: .
+      dockerfile: stock-service/Dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - services-net
+
+  report-service:
+    image: report-service
+    container_name: report
+    env_file:
+      - ../service-to-env/report-test.env
+    build:
+      context: .
+      dockerfile: report-service/Dockerfile
+    ports:
+      - "8083:8083"
+    volumes:
+      - ../service-to-data/convert-test:/app/convert-test
+    networks:
+      - services-net
+#    depends_on:
+#      - postgres-report
 
 networks:
   services-net:
