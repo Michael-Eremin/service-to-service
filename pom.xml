@@ -33,6 +33,9 @@
 		<postgresql.version>42.4.0</postgresql.version>
 	</properties>
 
+
+
+
 	<modules>
 		<module>order-service</module>
 		<module>stock-service</module>

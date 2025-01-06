@@ -4,6 +4,8 @@ FROM maven:3.9.8-eclipse-temurin-21 as dependencies
 WORKDIR /app/service-to-service
 COPY ./pom.xml .
 COPY ./order-service/pom.xml ./order-service/pom.xml
+#COPY ./report-service/pom.xml ./report-service/pom.xml
+#COPY ./stock-service/pom.xml ./stock-service/pom.xml
 
 
 RUN --mount=type=cache,target=$HOME/.m2 mvn -f /app/service-to-service/pom.xml dependency:go-offline
