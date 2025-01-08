@@ -1,6 +1,9 @@
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    build:
+      context: .
+      dockerfile: Dockerfile-zookeeper
+    image: zookeeper
     container_name: zookeeper_1
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -10,7 +13,10 @@ services:
       - services-net
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    build:
+      context: .
+      dockerfile: Dockerfile-kafka
+    image: kafka
     container_name: kafka_1
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181

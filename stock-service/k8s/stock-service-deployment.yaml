@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stock-service
+  template:
+    metadata:
+      labels:
+        app: stock-service
+    spec:
+      containers:
+        - name: stock-service
+          image: localhost:5000/stock-service:latest  # image name
+          ports:
+            - containerPort: 8082
+          envFrom:
+            - configMapRef:
+                name: stock-service-env  # ConfigMap environment variables
