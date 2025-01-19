@@ -17,6 +17,14 @@ spec:
           image: localhost:5000/stock-service:latest  # image name
           ports:
             - containerPort: 8082
+          volumeMounts:
+            - name: stock-volume
+              mountPath: /app/data-test-stock
           envFrom:
             - configMapRef:
                 name: stock-service-env  # ConfigMap environment variables
+
+      volumes:
+        - name: stock-volume
+          persistentVolumeClaim:
+            claimName: stock-pvc

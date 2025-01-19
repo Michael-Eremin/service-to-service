@@ -18,12 +18,12 @@ spec:
           ports:
             - containerPort: 8083
           volumeMounts:
-            - name: report-data
-              mountPath: /app/convert-test
+            - name: report-volume
+              mountPath: /app/convert-test/
           envFrom:
             - configMapRef:
                 name: report-service-env  # ConfigMap environment variables
       volumes:
-        - name: report-data
+        - name: report-volume
           persistentVolumeClaim:
             claimName: report-pvc
