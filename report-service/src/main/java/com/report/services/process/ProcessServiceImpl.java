@@ -1,5 +1,7 @@
 package com.report.services.process;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -9,48 +11,28 @@ import java.io.IOException;
 @Service
 public class ProcessServiceImpl implements ProcessService {
 
-    public ProcessServiceImpl () {};
+    private Environment env;
+
+    public ProcessServiceImpl(@Autowired Environment env) {
+        this.env = env;
+    }
 
     @Override
     public void createPdfFromExcel() throws InterruptedException, IOException {
 
-//        ProcessBuilder processBuilder = new ProcessBuilder(
-//                "/bin/sh",
-//                "-c",
-//                "cd",
-//                "/home/michaeleremin/encoder/",
-//                "&&",
-//                "libreoffice",
-//                "--headless",
-//                "--convert-to",
-//                "'pdf:calc_pdf_Export'",
-//                "--outdir",
-//                "/home/michaeleremin/encoder/",
-//                "plan_3085_30.xlsx"
-//        );
-
-//        ProcessBuilder processBuilder = new ProcessBuilder(
-//                "/usr/bin/bash",
-//                "-c",
-//                "cd",
-//                "/home/michaeleremin/encoder/",
-//                "&&",
-//                "cp",
-//                "plan_3085_30.xlsx",
-//                "plan_3085_301.xlsx"
-//        );
-
-//        ProcessBuilder processBuilder = new ProcessBuilder(
-//                "/usr/bin/bash",
-//                "-c",
-//                "cd /home/michaeleremin/encoder/ && cp plan_3085_30.xlsx plan_3085_301.xlsx"
-//        );
+        String pathToFileFolder = env.getProperty("spring.placement.convertpdf");
+        String pathToBash = env.getProperty("spring.placement.bash");
+        String fileName = "plan_3085_30.xlsx";
 
         ProcessBuilder processBuilder = new ProcessBuilder(
-                "/usr/bin/bash",
+                pathToBash,
                 "-c",
-                "cd /home/michaeleremin/encoder/ && libreoffice --headless --convert-to pdf:calc_pdf_Export --outdir . plan_3085_30.xlsx"
+                "cd "
+                    + pathToFileFolder
+                    + " && libreoffice --headless --convert-to pdf:calc_pdf_Export --outdir . "
+                    + fileName
         );
+
 
 //        processBuilder.directory(new File());
         Process process = processBuilder.start();

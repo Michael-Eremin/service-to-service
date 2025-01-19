@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: report-service
+  template:
+    metadata:
+      labels:
+        app: report-service
+    spec:
+      containers:
+        - name: report-service
+          image: localhost:5000/report-service:latest  # image name
+          ports:
+            - containerPort: 8083
+          volumeMounts:
+            - name: report-volume
+              mountPath: /app/convert-test/
+          envFrom:
+            - configMapRef:
+                name: report-service-env  # ConfigMap environment variables
+      volumes:
+        - name: report-volume
+          persistentVolumeClaim:
+            claimName: report-pvc

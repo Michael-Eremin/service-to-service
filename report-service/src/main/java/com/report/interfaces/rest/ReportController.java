@@ -56,7 +56,8 @@ public class ReportController {
 
     @PostMapping(value="/excelToPdf")
     void createExcelToPdf() throws Exception {
-            pdfService.createPdfFromExcel();
+        System.out.println("excelToPdf");
+        pdfService.createPdfFromExcel();
     }
 
 }

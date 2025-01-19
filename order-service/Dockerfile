@@ -1,26 +1,32 @@
-#FROM openjdk:21-slim
-#WORKDIR /app
-#COPY target/order-service-0.0.1-SNAPSHOT.jar order-service.jar
-#EXPOSE 8081
-#ENTRYPOINT ["java", "-jar", "order-service.jar"]
-
-
-# dependencies part
 FROM maven:3.9.8-eclipse-temurin-21 as dependencies
 
-COPY pom.xml .
-COPY order-service .
-RUN --mount=type=cache,target=$HOME/.m2 mvn dependency:go-offline
+# Copy prent pom.xml and service pom.xml
+WORKDIR /app/service-to-service
+COPY ./pom.xml .
+COPY ./order-service/pom.xml ./order-service/pom.xml
+#COPY ./report-service/pom.xml ./report-service/pom.xml
+#COPY ./stock-service/pom.xml ./stock-service/pom.xml
 
-# builder stage for building the application
+
+RUN --mount=type=cache,target=$HOME/.m2 mvn -f /app/service-to-service/pom.xml dependency:go-offline
+
+# App build stage
 FROM dependencies as build
-WORKDIR /app
-COPY ./order-service/src src
-RUN --mount=type=cache,target=$HOME/.m2 mvn -Dmaven.test.skip=true package
+WORKDIR /app/service-to-service/order-service
 
-# final stage
+
+COPY ./order-service/src ./src
+
+
+RUN --mount=type=cache,target=$HOME/.m2 mvn -f /app/service-to-service/pom.xml -Dmaven.test.skip=true package
+
+# Final build stage
 FROM openjdk:21-slim
 WORKDIR /app
-COPY --from=build /app/target/*.jar Backend.jar
+
+# Копируем собранный JAR-файл
+COPY --from=build /app/service-to-service/order-service/target/*.jar Backend.jar
+
 EXPOSE 8081
+
 CMD ["java", "-jar", "/app/Backend.jar"]
