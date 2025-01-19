@@ -38,8 +38,8 @@
 
 	<modules>
 		<module>order-service</module>
-		<module>stock-service</module>
-		<module>report-service</module>
+<!--		<module>stock-service</module>-->
+<!--		<module>report-service</module>-->
 	</modules>
 
 

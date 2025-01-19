@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+spec:
+  serviceName: zookeeper
+  replicas: 3
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      initContainers:
+        - name: init-myid
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              echo ${HOSTNAME##*-} > /data/myid
+          volumeMounts:
+            - name: zookeeper-data
+              mountPath: /data
+      containers:
+        - name: zookeeper
+          image: zookeeper:3.8.4
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+          env:
+            - name: ZOO_MY_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ZOO_SERVERS
+              value: "server.1=zookeeper-0.zookeeper:2888:3888,server.2=zookeeper-1.zookeeper:2888:3888,server.3=zookeeper-2.zookeeper:2888:3888"
+          volumeMounts:
+            - name: zookeeper-data
+              mountPath: /data
+            - name: zookeeper-datalog
+              mountPath: /datalog
+            - name: zookeeper-config
+              mountPath: /conf
+      volumes:
+        - name: zookeeper-config
+          configMap:
+            name: zookeeper-config
+  volumeClaimTemplates:
+    - metadata:
+        name: zookeeper-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+    - metadata:
+        name: zookeeper-datalog
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
