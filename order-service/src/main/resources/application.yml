@@ -23,3 +23,9 @@ spring:
       kafka:
         binder:
           brokers: ${ORDER_BROKERS_URL}
+
+logging:
+  level:
+    root: INFO
+#  file:
+#    name: logs/app.log
