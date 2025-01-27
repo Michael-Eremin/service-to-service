@@ -1,0 +1,11 @@
+groups:
+  - name: request
+    rules:
+      - alert: HighRequestLatency
+        expr: job:request_latency_seconds:mean5m{job="order"} > 0.5
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High request latency"
+          description: "The request latency is above 0.5 seconds for the last 10 minutes."

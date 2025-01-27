@@ -58,8 +58,8 @@ services:
       - ../service-to-data/convert-test:/app/convert-test
     networks:
       - services-net
-  #    depends_on:
-  #      - postgres-report
+    depends_on:
+      - postgres-report
 
   stock-service:
     image: stock-service

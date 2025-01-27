@@ -1,0 +1,34 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9900:9090"
+    volumes:
+      - ./prometheus/config:/etc/prometheus
+      - ../../service-to-data/metrics-data/prometheus_data:/prometheus/data
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - "--storage.tsdb.path=/prometheus/data"
+    restart: unless-stopped
+    networks:
+      - services-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "9910:3000"
+    volumes:
+      - ../../service-to-data/metrics-data/grafana_data:/var/lib/grafana
+    env_file:
+      - ../../service-to-env/grafana.env
+    restart: unless-stopped
+    networks:
+      - services-net
+
+networks:
+  services-net:
+    name: services-net
+    driver: bridge
+    external: true

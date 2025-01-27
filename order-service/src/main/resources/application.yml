@@ -24,8 +24,26 @@ spring:
         binder:
           brokers: ${ORDER_BROKERS_URL}
 
-logging:
-  level:
-    root: INFO
+# for logstash_____
+#logging:
+#  level:
+#    root: INFO
+
 #  file:
 #    name: logs/app.log
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,metrics,prometheus"  # open endpoints
+  endpoint:
+    health:
+      show-details: always
+  server:
+    port: 8081
+  prometheus:
+  metrics:
+    export:
+      enable: true
