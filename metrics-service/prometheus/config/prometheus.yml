@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 15s  # metrics interval
+  evaluation_interval: 15s  # alert interval
+
+scrape_configs:
+  - job_name: 'prometheus'  # prometheus metrics
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  - job_name: 'order'  # Spring Boot app name
+    metrics_path: '/actuator/prometheus'  # metrics Endpoint
+    static_configs:
+      - targets: ['order:8081']  # path to Spring Boot app
+
+
+rule_files:
+  - 'alert.rules.yml'  # rules file (option)
